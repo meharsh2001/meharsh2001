@@ -1,6 +1,6 @@
 var express         =require("express"),
     mongoose        =require("mongoose"),
-    port            =process.env.PORT || 3001,
+    port            =process.env.PORT || 8000,
     app             =express(),
 
     methodOverride  =require("method-override")
@@ -13,8 +13,7 @@ var express         =require("express"),
     app.use(methodOverride("_method"));
     app.use(bodyParser.urlencoded({extended:false}));
 
-var itemsRoute=require("./routes/items"),
-    indexRoute=require("./routes/index")
+var indexRoute=require("./routes/index")
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine","ejs");
@@ -25,10 +24,10 @@ const DB='mongodb+srv://admin:admin@cluster0.oun5l.mongodb.net/new';
 mongoose.connect(DB).then(()=>{console.log('DATABASE CONNECTED to localhost:'+ port);}).catch((err)=> console.log('Database Not Connected'+err));
 
 //Offline MONGO
-//mongoose.connect("mongodb://localhost:27017/new").then( () => console.log("success")).catch((err)=>console.log(err));   
+//mongoose.connect("mongodb://localhost:27017/ttchannel").then( () => console.log("success")).catch((err)=>console.log(err));   
 
 app.use(require("express-session")({
-    secret:"Session ",
+    secret:"Session for MissingX",
     resave:false,
     saveUninitialized:false
 }));
@@ -44,11 +43,9 @@ app.use(function(req,res,next)
     res.locals.currentUser=req.user;
     next(); 
 });
-
-app.use(itemsRoute);
 app.use(indexRoute);
 
 app.listen(port,function()
 {
-    console.log("started!");
+    console.log("server has started!");
 });
